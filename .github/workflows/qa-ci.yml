@@ -1,0 +1,44 @@
+name: QA | API + Selenium E2E
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          cache-dependency-path: automation/pom.xml
+      - name: Install app/test dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Backend unit/integration tests
+        run: python -m pytest -q tests/backend --junitxml=backend-results.xml
+      - name: Start app
+        run: |
+          CASEPILOT_DB_PATH="$RUNNER_TEMP/casepilot-e2e.sqlite3" python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 > "$RUNNER_TEMP/app.log" 2>&1 &
+          for i in {1..30}; do curl -fsS http://localhost:8000/api/health && break || sleep 1; done
+          curl -fsS http://localhost:8000/api/health
+      - name: Selenium UI tests (Chrome headless)
+        working-directory: automation
+        run: mvn --batch-mode test -Dheadless=true -DbaseUrl=http://localhost:8000
+      - name: Upload test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: casepilot-quality-evidence
+          path: |
+            backend-results.xml
+            automation/target/surefire-reports/
+            automation/target/evidence/
+          if-no-files-found: ignore

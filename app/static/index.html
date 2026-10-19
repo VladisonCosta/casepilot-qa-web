@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CasePilot — Central de Atendimento</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<section id="login-view" class="login-layout">
+  <div class="brand-panel"><div class="brand-lockup">◈ CasePilot <span>QUALITY DEMO</span></div>
+   <div class="hero-copy"><div class="eyebrow">WORK SMARTER · RESPOND FASTER</div><h1>Atendimento claro.<br><em>Qualidade em cada etapa.</em></h1><p>Uma central de chamados demonstrável, construída para testar jornadas reais de usuários com automação confiável.</p><div class="feature-pills"><span>● Fluxo de chamados</span><span>● Permissões</span><span>● Automação E2E</span></div></div>
+   <div class="hero-foot">QUALITY ENGINEERING PORTFOLIO · 2026</div>
+  </div>
+  <div class="login-side"><form id="login-form" class="login-card"><div class="login-symbol">◈</div><div class="eyebrow">BEM-VINDO DE VOLTA</div><h2>Entre na sua conta</h2><p>Use as credenciais de demonstração.</p>
+    <label for="email">E-mail</label><input id="email" data-testid="login-email" autocomplete="username" type="email" required placeholder="seu@email.com" value="agent@casepilot.local">
+    <label for="password">Senha</label><input id="password" data-testid="login-password" autocomplete="current-password" type="password" required placeholder="Sua senha" value="demo1234">
+    <div id="login-error" data-testid="login-error" class="error-message" role="alert" hidden></div>
+    <button class="primary wide" type="submit" data-testid="login-submit">Acessar plataforma <span>→</span></button>
+    <div class="demo-info"><strong>Acessos para demonstração</strong><p>Agente: agent@casepilot.local</p><p>Leitura: viewer@casepilot.local</p><p>Senha para ambos: demo1234</p></div>
+  </form></div>
+</section>
+<section id="dashboard-view" class="dashboard" hidden>
+ <aside class="sidebar"><div class="sidebar-logo">◈ <strong>CasePilot</strong></div><div class="nav-label">WORKSPACE</div><div class="sidebar-nav active">▦ <span>Chamados</span></div><div class="sidebar-nav">◷ <span>Atividade</span></div><div class="sidebar-nav">◉ <span>Indicadores</span></div><div class="sidebar-bottom"><div class="account-card"><div class="avatar">CP</div><div><b id="account-role">Agente</b><small id="account-email">agent@casepilot.local</small></div></div><button id="logout" data-testid="logout-button" class="ghost dark">Sair da conta →</button></div></aside>
+ <main class="main"><div class="topbar"><div><span class="breadcrumb">Workspace</span><span class="breadcrumb-divider"> / </span><span class="breadcrumb-current">Chamados</span></div><span class="env-pill">● Ambiente de demonstração</span></div>
+ <div class="main-inner"><div class="intro"><div><div class="eyebrow navy">CENTRAL DE ATENDIMENTO</div><h1>Gestão de chamados</h1><p>Acompanhe, priorize e resolva solicitações em um só lugar.</p></div><button id="new-ticket" data-testid="new-ticket-button" class="primary">+ Novo chamado</button></div>
+ <div class="metrics"><div class="metric"><div class="metric-label">TOTAL DE CHAMADOS <span>▦</span></div><strong id="metric-total">–</strong><small>Solicitações registradas</small></div><div class="metric"><div class="metric-label">EM ABERTO <span>◷</span></div><strong id="metric-open">–</strong><small>Aguardando atendimento</small></div><div class="metric"><div class="metric-label">EM ANDAMENTO <span>↗</span></div><strong id="metric-progress">–</strong><small>Em tratamento</small></div><div class="metric"><div class="metric-label">RESOLVIDOS <span>✓</span></div><strong id="metric-resolved">–</strong><small>Finalizados com sucesso</small></div></div>
+ <div class="table-section"><div class="table-header"><div><h2>Todos os chamados</h2><p>Consulte e organize as solicitações registradas.</p></div></div><div class="filters"><div class="search-wrap">⌕ <input aria-label="Buscar chamados" data-testid="search-tickets" id="search" placeholder="Buscar por título ou descrição..."></div><select aria-label="Filtrar por status" data-testid="filter-status" id="status-filter"><option value="ALL">Todos os status</option><option value="OPEN">Aberto</option><option value="IN_PROGRESS">Em andamento</option><option value="RESOLVED">Resolvido</option></select></div>
+ <div class="table-scroll"><table><thead><tr><th>CHAMADO</th><th>PRIORIDADE</th><th>STATUS</th><th>CRIADO EM</th><th>AÇÃO</th></tr></thead><tbody id="ticket-list" data-testid="ticket-list"></tbody></table></div><p id="empty-state" data-testid="empty-state" class="empty" hidden>Nenhum chamado encontrado.</p><div class="table-footer" id="table-footer"></div></div>
+ <div class="footer-hint">◈ CasePilot • Projeto demonstrativo de Quality Engineering</div></div></main>
+</section>
+<div id="modal-backdrop" class="modal-backdrop" hidden><form id="ticket-form" class="modal" aria-label="Criar novo chamado"><div class="modal-head"><div><div class="eyebrow navy">NOVO REGISTRO</div><h2>Abrir chamado</h2></div><button type="button" class="close" id="close-modal" aria-label="Fechar">×</button></div>
+<label for="ticket-title">Título do chamado</label><input id="ticket-title" data-testid="ticket-title" minlength="5" maxlength="100" required placeholder="Descreva o assunto">
+<label for="ticket-description">Descrição</label><textarea id="ticket-description" data-testid="ticket-description" minlength="10" maxlength="1000" required placeholder="Descreva o problema com detalhes"></textarea>
+<label for="ticket-priority">Prioridade</label><select id="ticket-priority" data-testid="ticket-priority"><option value="LOW">Baixa</option><option value="MEDIUM" selected>Média</option><option value="HIGH">Alta</option></select>
+<div class="modal-actions"><button type="button" class="secondary" id="cancel-modal">Cancelar</button><button class="primary" type="submit" data-testid="save-ticket">Criar chamado</button></div></form></div>
+<div id="toast" class="toast" role="status" data-testid="toast" hidden></div>
+<script src="/static/app.js"></script>
+</body></html>

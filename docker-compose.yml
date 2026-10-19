@@ -1,0 +1,15 @@
+services:
+  web:
+    build: .
+    ports: ["8000:8000"]
+    environment:
+      CASEPILOT_DB_PATH: /workspace/data/casepilot.sqlite3
+    volumes:
+      - casepilot_data:/workspace/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+volumes:
+  casepilot_data:
